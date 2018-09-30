@@ -5,7 +5,7 @@ input_dir = "/mnt/XHDD/ADNI_20x3_2015_IAM"
 ## Name of csv file (note to user: you can change this variable)
 csv_filename = "testset_data.csv"
 
-##
+## These parameters run each code
 T_weighted_penalisation_algorithm = True
 colour_channel_algorithm = True
 
@@ -36,7 +36,7 @@ alpha = 0.5
 ## are given instead of binary masks.
 bin_tresh = 0.5
 
-## Threshold value for Age value penalisation
+## Threshold value for Age value penalisation approach
 Ttrsh = 0.6
 
 ## Save JPEG outputs
