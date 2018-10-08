@@ -148,7 +148,7 @@ def save_agemap_img(slice_age_map_all, patch_size, img_slice, gt_slice, save_pat
 
 
 def iam_colour_channel_gpu_compute(data = "",  patch_size=[1, 2, 4, 8], blending_weights=[0.65, 0.2, 0.1, 0.05], alpha=0.5, save_jpeg=True, save_mat=True,
-                                   modality_data=[], icv_data=[], csf_data=[], nawm_data=[], gt_data=[],num_samples=[],
+                                   modality_data=[], icv_data=[], csf_data=[], gt_data=[],num_samples=[],
                                    original_icv_data=[], original_csf_data=[],num_mean_samples=0, dirOutput=""):
 
     FLAIR_data = modality_data[0]
@@ -170,7 +170,6 @@ def iam_colour_channel_gpu_compute(data = "",  patch_size=[1, 2, 4, 8], blending
         '''Load Image Slices'''
         icv_slice = icv_data[:, :, zz]
         csf_slice = csf_data[:, :, zz]
-        nawm_slice = nawm_data[:, :, zz]
         gt_slice = gt_data[:, :, zz]
         mask_slice = mask_brain[:, :, zz]
 

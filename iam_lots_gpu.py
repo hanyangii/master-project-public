@@ -76,9 +76,9 @@ def main():
                 results = {}
 
                 # Get Data
-                modality_data, icv_data, csf_data, nawm_data, gt_data, mri_nii = data_load(dirOutput, data, input_dir, bin_tresh, colour_channel_algorithm, T_weighted_penalisation_algorithm)
+                modality_data, icv_data, csf_data, gt_data, mri_nii = data_load(dirOutput, data, row, bin_tresh, colour_channel_algorithm, T_weighted_penalisation_algorithm)
                 # Data Preprocessing
-                original_icv_data, original_csf_data, nawm_data, csf_data, icv_data = preprocessing(icv_data, csf_data, nawm_data)
+                original_icv_data, original_csf_data, csf_data, icv_data = preprocessing(icv_data, csf_data)
                 gt_map = gt_data[np.multiply(~original_csf_data, original_icv_data) > 0]
 
                 '''Colour channel approach'''
@@ -93,7 +93,6 @@ def main():
                                                    modality_data = modality_data,
                                                    icv_data = icv_data,
                                                    csf_data = csf_data,
-                                                   nawm_data = nawm_data,
                                                    gt_data = gt_data,
                                                    num_samples = num_samples,
                                                    original_icv_data = original_icv_data,
@@ -128,7 +127,6 @@ def main():
                                                    modality_data = modality_data,
                                                    icv_data = icv_data,
                                                    csf_data = csf_data,
-                                                   nawm_data = nawm_data,
                                                    gt_data = gt_data,
                                                    num_samples = num_samples,
                                                    original_icv_data = original_icv_data,

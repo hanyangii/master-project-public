@@ -69,7 +69,7 @@ def initial_check(output_filedir, csv_filename, patch_size, blending_weights, de
     return num_mean_samples_all, num_samples_all
 
 
-def data_load(dirOutput, data, input_dir, bin_tresh, colourchannel_approach, penalisation_approach):
+def data_load(dirOutput, data, row, bin_tresh, colourchannel_approach, penalisation_approach):
     print('--\nNow processing data: ' + data)
 
     ''' Create output folder(s) '''
@@ -105,27 +105,20 @@ def data_load(dirOutput, data, input_dir, bin_tresh, colourchannel_approach, pen
         if e.errno != errno.EEXIST:
             raise
 
-    niiDir = input_dir + '/' + data + '/'
-    FLAIR_nii = nib.load(niiDir + 'FLAIR.nii.gz')  # nib.load(row[2])
-    icv_nii = nib.load(niiDir + 'ICV.nii.gz')  # nib.load(row[3])
-    csf_nii = nib.load(niiDir + 'CSF.nii.gz')  # nib.load(row[4])
-    T1w_nii = nib.load(niiDir + 'T1W.nii.gz')  # nib.load(row[6])
-    GT_nii = nib.load(niiDir + 'WMH_label.nii.gz')  # nib.load(row[7])
+    #niiDir = input_dir + '/' + data + '/'
+    FLAIR_nii = nib.load(row[1]) #nib.load(niiDir + 'FLAIR.nii.gz')  #
+    T1w_nii = nib.load(row[2]) # nib.load(niiDir + 'T1W.nii.gz')  #
+    T2w_nii = nib.load(row[3])
+    icv_nii =  nib.load(row[4]) #nib.load(niiDir + 'ICV.nii.gz')
+    csf_nii = nib.load(row[5]) #nib.load(niiDir + 'CSF.nii.gz')  #
+    GT_nii =  nib.load(row[6]) #nib.load(niiDir + 'WMH_label.nii.gz')  #
 
     FLAIR_data = np.squeeze(FLAIR_nii.get_data())
     icv_data = np.squeeze(icv_nii.get_data())
     csf_data = np.squeeze(csf_nii.get_data())
     T1w_data = np.squeeze(T1w_nii.get_data())
+    T2w_data = np.squeeze(T2w_nii.get_data())
     gt_data = np.squeeze(GT_nii.get_data())
-
-    T2w_path = niiDir + 'T2W.nii.gz'
-
-    if os.path.exists(T2w_path):
-        T2w_nii = nib.load(T2w_path)
-        T2w_data = np.squeeze(T2w_nii.get_data())
-    else:
-        print('T2w data of %s does not exist'%data)
-
 
     ''' Make sure that all brain masks are binary masks, not probability '''
     icv_data[icv_data > bin_tresh] = 1
@@ -136,16 +129,16 @@ def data_load(dirOutput, data, input_dir, bin_tresh, colourchannel_approach, pen
     gt_data[gt_data <= bin_tresh] = 0
 
     ''' Read and open NAWM data if available '''
-    nawm_nii = nib.load(niiDir + 'NAWM.nii.gz')
-    print(niiDir)
-    nawm_data = np.squeeze(nawm_nii.get_data())
-    print('NAWM:', len(nawm_data > 0))
+    #nawm_nii = nib.load(niiDir + 'NAWM.nii.gz')
+    #print(niiDir)
+    #nawm_data = np.squeeze(nawm_nii.get_data())
+    #print('NAWM:', len(nawm_data > 0))
     del csf_nii, icv_nii, T1w_nii, GT_nii  # Free memory
 
-    return [FLAIR_data, T1w_data, T2w_data], icv_data, csf_data, nawm_data, gt_data, FLAIR_nii
+    return [FLAIR_data, T1w_data, T2w_data], icv_data, csf_data, gt_data, FLAIR_nii
 
 
-def preprocessing(icv_data, csf_data, nawm_data):
+def preprocessing(icv_data, csf_data):
     ''' ICV Erosion '''
     original_icv_data = icv_data.astype(bool)
     original_csf_data = csf_data.astype(bool)
@@ -155,17 +148,17 @@ def preprocessing(icv_data, csf_data, nawm_data):
         kernel = kernel_sphere(5)
         icv_data[:, :, ii] = skimorph.erosion(icv_data[:, :, ii], kernel)
         kernel = kernel_sphere(5)
-        nawm_data[:, :, ii] = skimorph.dilation(nawm_data[:, :, ii], kernel)
+        #nawm_data[:, :, ii] = skimorph.dilation(nawm_data[:, :, ii], kernel)
 
     csf_data = csf_data.astype(bool)
     csf_data = ~csf_data
     csf_data = csf_data.astype(float)
-
+    '''
     nawm_data = nawm_data.astype(bool)
     nawm_data = ~nawm_data
     nawm_data = nawm_data.astype(int)
-
-    return original_icv_data, original_csf_data, nawm_data, csf_data, icv_data
+    '''
+    return original_icv_data, original_csf_data, csf_data, icv_data
 
 
 def brain_vol_trsh(vol_slice, patch_size):

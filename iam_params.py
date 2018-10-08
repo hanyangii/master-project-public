@@ -1,9 +1,12 @@
 ## General output full path (note to user: you can change this variable)
-output_filedir = "/mnt/XHDD/master_project_result/Threshold_test_newavg_nongpu"
+#output_filedir = "/mnt/XHDD/master_project_result/Threshold_test_newavg_nongpu"
+output_filedir = "W:\BRICIA\\resources\Cesca_MSS2_sample_50\\yunhee_master_project_result"
 
-input_dir = "/mnt/XHDD/ADNI_20x3_2015_IAM"
+#input_dir = "/mnt/XHDD/ADNI_20x3_2015_IAM"
+input_dir = "W:\BRICIA\\resources\Cesca_MSS2_sample_50\\"
 ## Name of csv file (note to user: you can change this variable)
-csv_filename = "testset_data.csv"
+#csv_filename = "testset_data.csv"
+csv_filename = "W:\BRICIA\\resources\Cesca_MSS2_sample_50\data_list.csv"
 
 ## These parameters run each code
 T_weighted_penalisation_algorithm = True

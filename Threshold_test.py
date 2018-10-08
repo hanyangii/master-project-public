@@ -129,7 +129,7 @@ def save_agemap_img(slice_age_map_all, patch_size, img_slice, gt_slice, save_pat
 
 
 def iam_Penalisation_gpu_compute(data = "",  patch_size=[1, 2, 4, 8], blending_weights=[0.65, 0.2, 0.1, 0.05], alpha=0.5, save_jpeg=True, save_mat=True,
-                                 modality_data=[], icv_data=[], csf_data=[], nawm_data=[], gt_data=[],num_samples=[],
+                                 modality_data=[], icv_data=[], csf_data=[], gt_data=[],num_samples=[],
                                  original_icv_data=[], original_csf_data=[],num_mean_samples=0, dirOutput="", trsh=0.6):
     FLAIR_data = modality_data[0]
     T1w_data = modality_data[1]
@@ -149,7 +149,6 @@ def iam_Penalisation_gpu_compute(data = "",  patch_size=[1, 2, 4, 8], blending_w
     valid_FLAIR_data = np.multiply(mask_brain, FLAIR_data).astype(float)
     valid_T1w_data = np.multiply(mask_brain, T1w_data).astype(float)
     valid_T2w_data = np.multiply(mask_brain, T2w_data).astype(float)
-    valid_nawm_data = np.multiply(mask_brain, nawm_data).astype(float)
 
     for zz in range(0, FLAIR_data.shape[2]):
         print('\n---> Slice number: ' + str(zz) + ' <---')
@@ -157,7 +156,6 @@ def iam_Penalisation_gpu_compute(data = "",  patch_size=[1, 2, 4, 8], blending_w
         '''Load Image Slices'''
         icv_slice = icv_data[:, :, zz]
         csf_slice = csf_data[:, :, zz]
-        nawm_slice = nawm_data[:, :, zz]
         gt_slice = gt_data[:, :, zz]
         mask_slice = mask_brain[:,:,zz]
         valid_FLAIR_slice = valid_FLAIR_data[:,:,zz]
